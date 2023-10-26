@@ -5,8 +5,6 @@ const GetUserInfoForm = () => {
     <>
       <div>
         <p>GetUserInfoForm</p>
-        <h1>Name: {}</h1>
-        <p>Roles: {} </p>
       </div>
     </>
   );
