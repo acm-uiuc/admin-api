@@ -6,7 +6,7 @@ Resources:
   MyDynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: UsersPermissionsTable
+      TableName: infra-admin-api
       AttributeDefinitions:
         - AttributeName: netid
           AttributeType: S
