@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation Template for DynamoDB Table
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  MyDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: UsersPermissionsTable
+      AttributeDefinitions:
+        - AttributeName: netid
+          AttributeType: S
+      KeySchema:
+        - AttributeName: netid
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+Outputs:
+  DynamoDBTableName:
+    Description: The name of the DynamoDB table
+    Value: !Ref MyDynamoDBTable
