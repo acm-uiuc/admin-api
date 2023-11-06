@@ -5,7 +5,6 @@ const RemoveRolesForm = () => {
     <>
       <div>
         <p>RemoveRolesForm</p>
-        <p>Dropdown to remove roles</p>
       </div>
     </>
   );

@@ -5,7 +5,6 @@ const AddRolesForm = () => {
     <>
       <div>
         <p>AddRolesForm</p>
-        <p>Dropdown to add roles</p>
       </div>
     </>
   );
