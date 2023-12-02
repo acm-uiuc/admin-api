@@ -35,7 +35,35 @@ def get_user(netid):
 def delete_user(netid):
     response = table.delete_item(Key={"netid": netid})
 
-#def modify_user(netid, newRoles, newPerms):
+def update_user(netid, newRoles, newPerms):
+    if (get_user(netid) == "Does Not Exist"):
+        return "User does not exist"
+    
+    nRoles = newRoles.split(",")
+    nRoles = [x.strip() for x in nRoles]
+    nRoles = get_user(netid).get("value").get("roles") + nRoles
+
+    nPerms = newPerms.split(",")
+    nPerms = [x.strip() for x in nPerms]
+    nPerms = get_user(netid).get("value").get("permissions") + nPerms
+
+    user = {
+        "netid": netid,
+        "roles": nRoles,
+        "permissions": nPerms
+    }
+
+    user_json = json.loads(json.dumps(user, indent=4))
+
+    response = table.update_item(
+        Key={"netid": netid},
+        AttributeUpdates={"value":
+            {"Value": user_json,
+            "Action": "PUT"}
+            }
+        )
+    
+    return get_user(netid)
 
 if __name__ == "__main__":
     netid = input("netid: ")
@@ -46,8 +74,12 @@ if __name__ == "__main__":
 
     print(f"getting user: {get_user(netid)}")
 
+    print(f"updating user: {update_user(netid, '11, 22', '  22  , 11 ')}")
+
     print("deleting user")
 
     delete_user(netid)
 
     print(f"getting user: {get_user(netid)}")
+
+    print(f"updating user: {update_user(netid, '11, 22', '  22  , 11 ')}")
