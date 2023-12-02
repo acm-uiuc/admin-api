@@ -14,7 +14,7 @@ const GetUserInfoForm = () => {
       // Do something with the netID to get UserInfo
       // Display user info by setting userInfo
 
-      setUserInfo("bean");
+      setUserInfo(netID + " information: ");
 
       event.preventDefault();
       setNetID("");

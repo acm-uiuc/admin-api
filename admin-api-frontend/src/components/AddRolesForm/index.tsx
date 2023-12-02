@@ -39,7 +39,7 @@ const AddRolesForm = () => {
               <textarea value={netID} onChange={handleNetIDChange} />
             </label>
             <label>
-              Roles:
+              Roles
               <textarea value={roles} onChange={handleRolesChange} />
             </label>
             <input type="submit" value="Submit" />
