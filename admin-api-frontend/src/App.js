@@ -1,9 +1,9 @@
 import "./App.css";
-import GetUserInfoForm from "./components/GetUserInfoForm/index.tsx";
-import AddRolesForm from "./components/AddRolesForm/index.tsx";
-import RemoveRolesForm from "./components/RemoveRolesForm/index.tsx";
-import CreateUserForm from "./components/CreateUserForm/index.tsx";
-import DeleteUserForm from "./components/DeleteUserForm/index.tsx";
+import GetUserInfoForm from "./components/FormsFolder/GetUserInfoForm/index.tsx";
+import AddRolesForm from "./components/FormsFolder/AddRolesForm/index.tsx";
+import RemoveRolesForm from "./components/FormsFolder/RemoveRolesForm/index.tsx";
+import CreateUserForm from "./components/FormsFolder/CreateUserForm/index.tsx";
+import DeleteUserForm from "./components/FormsFolder/DeleteUserForm/index.tsx";
 
 function App() {
   return (

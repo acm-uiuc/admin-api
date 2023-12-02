@@ -1,7 +1,15 @@
 import React, { useState } from "react";
-import "../../components/CommonStyles/styles.css";
+import "../../CommonStyles/styles.css";
 
-const AddRolesForm = () => {
+interface CommonFormWithRolesProps {
+  name: String;
+  backendFunction: () => void;
+}
+
+const CommonFormWithRoles: React.FC<CommonFormWithRolesProps> = ({
+  name,
+  backendFunction,
+}) => {
   const [netID, setNetID] = useState<string>("");
   const [roles, setRoles] = useState<string>("");
   const [rolesSplit, setRolesSplit] = useState<string[]>([]);
@@ -31,7 +39,7 @@ const AddRolesForm = () => {
   return (
     <>
       <div>
-        <p>AddRolesForm</p>
+        <p>{name}</p>
         <form onSubmit={handleSubmit}>
           <div className="form-container">
             <label>
@@ -49,4 +57,4 @@ const AddRolesForm = () => {
     </>
   );
 };
-export default AddRolesForm;
+export default CommonFormWithRoles;

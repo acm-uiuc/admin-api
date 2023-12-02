@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 
-const GetUserInfoForm = () => {
+interface CommonFormProps {
+  name: String;
+  backendFunction: () => void;
+}
+
+const CommonForm: React.FC<CommonFormProps> = ({ name, backendFunction }) => {
   const [netID, setNetID] = useState<string>("");
-  const [userInfo, setUserInfo] = useState<string>("info");
 
   const handleNetIDChange = (event) => {
     setNetID(event.target.value);
@@ -11,10 +15,7 @@ const GetUserInfoForm = () => {
   const handleSubmit = (event) => {
     if (netID !== "") {
       console.log(netID);
-      // Do something with the netID to get UserInfo
-      // Display user info by setting userInfo
-
-      setUserInfo(netID + " information: ");
+      // Do something with the netID
 
       event.preventDefault();
       setNetID("");
@@ -24,7 +25,7 @@ const GetUserInfoForm = () => {
   return (
     <>
       <div>
-        <p>GetUserInfoForm</p>
+        <p>DeleteUserForm</p>
         <form onSubmit={handleSubmit}>
           <div className="form-container">
             <label>
@@ -34,9 +35,8 @@ const GetUserInfoForm = () => {
             <input type="submit" value="Submit" />
           </div>
         </form>
-        <div>{userInfo}</div>
       </div>
     </>
   );
 };
-export default GetUserInfoForm;
+export default CommonForm;
