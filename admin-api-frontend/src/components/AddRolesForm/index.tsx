@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./styles.css";
+import "../../components/CommonStyles/styles.css";
 
 const AddRolesForm = () => {
   const [netID, setNetID] = useState<string>("");
@@ -16,14 +16,16 @@ const AddRolesForm = () => {
   };
 
   const handleSubmit = (event) => {
-    console.log(netID);
-    console.log(rolesSplit);
-    // Do something with the netID and roles
+    if (netID !== "" && roles !== "") {
+      console.log(netID);
+      console.log(rolesSplit);
+      // Do something with the netID and roles
 
-    event.preventDefault();
-    setRolesSplit([]);
-    setNetID("");
-    setRoles("");
+      event.preventDefault();
+      setRolesSplit([]);
+      setNetID("");
+      setRoles("");
+    }
   };
 
   return (
