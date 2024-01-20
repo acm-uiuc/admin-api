@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../../CommonStyles/styles.css";
 
-const CreateUserForm = ({}) => {
+const CreateUserForm = () => {
   const [netID, setNetID] = useState<string>("");
   const [roles, setRoles] = useState<string>("");
   const [rolesSplit, setRolesSplit] = useState<string[]>([]);
