@@ -18,6 +18,16 @@ Resources:
         WriteCapacityUnits: 1
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: true
+  create_user:
+    Type: AWS::Lambda::Function
+    Properties:
+      Role: arn:aws:iam::123456789012:role/lambda-role
+      Code: 
+        S3Bucket: #???
+        S3Key: #???
+        ZipFile: backend/create_user.py
+      Timeout: 5
+    #Before adding more functions, it would be helpful to know what properties the function should have
 
 Outputs:
   DynamoDBTableName:
