@@ -46,9 +46,10 @@ Resources:
         PointInTimeRecoveryEnabled: true
 
   AdminAPIUserManagementLambda:
-    Type: AWS::Lambda::Function
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: ../backend/user_funs.py 
+      AutoPublishAlias: live
       Runtime: python3.10
       Description: User Management Lambda
       FunctionName: !Ref UserManagementLambdaName
