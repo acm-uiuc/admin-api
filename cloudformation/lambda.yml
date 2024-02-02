@@ -8,12 +8,17 @@ Parameters:
     Type: String
     AllowedValues: [ 'dev', 'prod' ]
 
+  AlertSNSArn:
+    Description: SNS Queue to send alarm alerts to
+    Type: String
+    Default: arn:aws:sns:us-east-1:298118738376:infra-monitor-alerts
+
   UseCustomDomainName:
     Type: String
     Default: true
     AllowedValues: [ true, false ]
 
-  UserManagementLambda:
+  UserManagementLambdaName:
     Type: String
     AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
     Default: infra-admin-api-user-management-lambda
@@ -47,7 +52,7 @@ Resources:
       AutoPublishAlias: live
       Runtime: python3.10
       Description: User Management Lambda
-      FunctionName: !Ref UserManagementLambda
+      FunctionName: !Ref UserManagementLambdaName
       Handler: lambda_handler
       MemorySize: 2048
       Role: !GetAtt AdminAPIUserManagementLambdaIAMRole.Arn
@@ -57,8 +62,8 @@ Resources:
     Type: 'AWS::Cloudwatch::Alarm'
     Condition: IsProd
     Properties: 
-      AlarmName: !Sub '${UserManagementLambda}-alarm'
-      AlarmDescription: !Sub 'Alarm if ${UserManagementLambda} function errors are detected.'
+      AlarmName: !Sub '${UserManagementLambdaName}-alarm'
+      AlarmDescription: !Sub 'Alarm if ${UserManagementLambdaName} function errors are detected.'
       Namespace: 'AWS/Lambda'
       MetricName: 'Errors'
       Statistic: 'Sum'
@@ -70,7 +75,7 @@ Resources:
         - !Ref AlertSNSArn
       Dimensions:
         - Name: 'FunctionName'
-          Value: !Ref UserManagementLambda
+          Value: !Ref AdminAPIUserManagementLambda
   
   AdminAPIUserManagementLambdaIAMRole:
     Type: AWS::IAM::Role
@@ -94,7 +99,7 @@ Resources:
                   - logs:PutLogEvents
                 Effect: Allow
                 Resource:
-                  - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${UserManagementLambda}:*
+                  - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${UserManagementLambdaName}:*
           PolicyName: lambda
         - PolicyDocument:
             Version: 2012-10-17
