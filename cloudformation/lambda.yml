@@ -49,7 +49,6 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       CodeUri: ../backend/user_funs.py 
-      AutoPublishAlias: live
       Runtime: python3.10
       Description: User Management Lambda
       FunctionName: !Ref UserManagementLambdaName
