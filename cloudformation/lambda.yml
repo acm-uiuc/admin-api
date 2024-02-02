@@ -105,8 +105,7 @@ Resources:
                   - dynamodb:UpdateItem
                 Effect: Allow
                 Resource:
-                  - !GetAtt ItemsDynamoTable.Arn
-                  - !GetAtt PurchasesDynamoTable.Arn
+                  - !GetAtt DynamoTable.Arn #Find right table name???
           PolicyName: lambda-dynamo
 
 
