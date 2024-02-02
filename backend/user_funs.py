@@ -65,6 +65,20 @@ def update_user(netid, newRoles, newPerms):
     
     return get_user(netid)
 
+def lambda_handler(event, context):
+    method = event['httpMethod']
+    path = event['path']
+    queryParams = event["queryStringParameters"]
+    if not queryParams:
+        queryParams = {}
+    print(f"INFO: Processing request: method {method}, path {path}.")
+
+    ## TODO: map method and path to user functions
+    # if method == "" and path == "":
+    #     return update_user...
+    # else if...
+
+
 if __name__ == "__main__":
     netid = input("netid: ")
     roles = input("roles: ")
