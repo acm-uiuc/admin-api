@@ -48,7 +48,7 @@ Resources:
       Runtime: python3.10
       Description: User Management Lambda
       FunctionName: !Ref UserManagementLambda
-      Handler: api.lambda_handler
+      Handler: lambda_handler
       MemorySize: 2048
       Role: !GetAtt AdminAPIUserManagementLambdaIAMRole.Arn
       Timeout: 5
@@ -105,7 +105,7 @@ Resources:
                   - dynamodb:UpdateItem
                 Effect: Allow
                 Resource:
-                  - !GetAtt DynamoTable.Arn #Find right table name???
+                  - !GetAtt MyDynamoDBTable.Arn
           PolicyName: lambda-dynamo
 
 
