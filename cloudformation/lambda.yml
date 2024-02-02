@@ -53,7 +53,7 @@ Resources:
       Runtime: python3.10
       Description: User Management Lambda
       FunctionName: !Ref UserManagementLambdaName
-      Handler: lambda_handler
+      Handler: user_funs.lambda_handler
       MemorySize: 2048
       Role: !GetAtt AdminAPIUserManagementLambdaIAMRole.Arn
       Timeout: 5
