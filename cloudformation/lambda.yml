@@ -2,6 +2,17 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: CloudFormation Template for DynamoDB Table
 Transform: AWS::Serverless-2016-10-31
 
+Parameters:
+  Env:
+    Description: Environment
+    Type: String
+    AllowedValues: [ 'dev', 'prod' ]
+
+  UseCustomDomainName:
+    Type: String
+    Default: true
+    AllowedValues: [ true, false ]
+
 Conditions:
   UseCustomDomainNameCond: !Equals [!Ref UseCustomDomainName, true]
   IsProd: !Equals [!Ref Env, 'prod']
