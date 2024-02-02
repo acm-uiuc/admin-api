@@ -48,7 +48,7 @@ Resources:
   AdminAPIUserManagementLambda:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ../backend/user_funs.py 
+      CodeUri: ../backend
       AutoPublishAlias: live
       Runtime: python3.10
       Description: User Management Lambda
