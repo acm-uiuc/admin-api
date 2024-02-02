@@ -13,6 +13,12 @@ Parameters:
     Default: true
     AllowedValues: [ true, false ]
 
+  UserManagementLambda:
+    Type: String
+    AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
+    Default: infra-admin-api-user-management-lambda
+
+
 Conditions:
   UseCustomDomainNameCond: !Equals [!Ref UseCustomDomainName, true]
   IsProd: !Equals [!Ref Env, 'prod']
