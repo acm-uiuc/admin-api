@@ -16,7 +16,8 @@ const CommonForm: React.FC<CommonFormProps> = ({ name, backendFunction }) => {
     if (netID !== "") {
       console.log(netID);
       // Do something with the netID
-
+      backendFunction("hello");
+      
       event.preventDefault();
       setNetID("");
     }
@@ -25,7 +26,7 @@ const CommonForm: React.FC<CommonFormProps> = ({ name, backendFunction }) => {
   return (
     <>
       <div>
-        <p>DeleteUserForm</p>
+        <p>{name}</p>
         <form onSubmit={handleSubmit}>
           <div className="form-container">
             <label>
