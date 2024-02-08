@@ -112,6 +112,61 @@ Resources:
                 Resource:
                   - !GetAtt MyDynamoDBTable.Arn
           PolicyName: lambda-dynamo
+          
+  AdminAPIGateway:
+    Type: AWS::Serverless::Api
+    DependsOn: 
+      - AdminAPIUserManagementLambda
+    Properties:
+      Name: !Ref AdminAPIGWName
+      Description: Admin API Gateway
+      AlwaysDeploy: True
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: ../docs/swagger.yml
+      Domain: !If [UseCustomDomainNameCond, {DomainName: !Ref CustomDomainName, CertificateArn: !Ref CustomCertificateArn}, !Ref 'AWS::NoValue']
+      StageName: default
+
+  AdminAPIGatewayLatencyAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    Condition: IsProd
+    Properties:
+      AlarmName: !Sub '${AdminAPIGWName}-latency-alarm'
+      AlarmDescription: !Sub 'Alarm if ${AdminAPIGWName} API gateway latency is > 2s.'
+      Namespace: 'AWS/ApiGateway'
+      MetricName: 'Latency'
+      Statistic: 'Average'
+      Period: '60'
+      EvaluationPeriods: '1'
+      ComparisonOperator: 'GreaterThanThreshold'
+      Threshold: '2000'
+      AlarmActions:
+        - !Ref AlertSNSArn
+      Dimensions:
+        - Name: 'ApiName'
+          Value: !Ref AdminAPIGWName
+
+  AdminAPIGateway5XXErrorAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    Condition: IsProd
+    Properties:
+      AlarmName: !Sub '${AdminAPIGWName}-5XX-alarm'
+      AlarmDescription: !Sub 'Alarm if ${AdminAPIGWName} API gateway 5XX errors are detected.'
+      Namespace: 'AWS/ApiGateway'
+      MetricName: '5XXError'
+      Statistic: 'Average'
+      Period: '60'
+      EvaluationPeriods: '1'
+      ComparisonOperator: 'GreaterThanThreshold'
+      Threshold: '2'
+      AlarmActions:
+        - !Ref AlertSNSArn
+      Dimensions:
+        - Name: 'ApiName'
+          Value: !Ref AdminAPIGWName
+
 
 
 Outputs:
