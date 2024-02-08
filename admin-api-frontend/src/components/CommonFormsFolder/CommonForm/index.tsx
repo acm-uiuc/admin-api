@@ -25,7 +25,7 @@ const CommonForm: React.FC<CommonFormProps> = ({ name, backendFunction }) => {
   return (
     <>
       <div>
-        <p>DeleteUserForm</p>
+        <p>{name}</p>
         <form onSubmit={handleSubmit}>
           <div className="form-container">
             <label>
