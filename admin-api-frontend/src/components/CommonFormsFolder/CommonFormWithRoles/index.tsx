@@ -28,8 +28,7 @@ const CommonFormWithRoles: React.FC<CommonFormWithRolesProps> = ({
       console.log(netID);
       console.log(rolesSplit);
       // Do something with the netID and roles
-      backendFunction("hello");
-      
+
       event.preventDefault();
       setRolesSplit([]);
       setNetID("");

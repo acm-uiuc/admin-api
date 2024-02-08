@@ -16,8 +16,7 @@ const CommonForm: React.FC<CommonFormProps> = ({ name, backendFunction }) => {
     if (netID !== "") {
       console.log(netID);
       // Do something with the netID
-      backendFunction("hello");
-      
+
       event.preventDefault();
       setNetID("");
     }
