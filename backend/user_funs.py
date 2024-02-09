@@ -72,12 +72,53 @@ def lambda_handler(event, context):
     if not queryParams:
         queryParams = {}
     print(f"INFO: Processing request: method {method}, path {path}.")
+    try:
+        return execute(method, path, queryParams, event['requestContext']['authorizer'])
+    except KeyError:
+        return execute(method, path, queryParams, {})
 
-    ## TODO: map method and path to user functions
-    # if method == "" and path == "":
-    #     return update_user...
-    # else if...
+def execute(method: str, path: str, queryParams: dict, context: dict) -> dict:
+    try:
+        func: function = find_handler[method][path]
+        return func(context, queryParams)
+    except KeyError as e:
+        print(f"ERROR: No handler found for method {method} and path {path}.")
+        return notImplemented(context, queryParams)
 
+def healthzHandler(context, queryParams):
+    return {
+        "statusCode": 200,
+        'headers': {'Access-Control-Allow-Origin': '*'},
+        "body": "UP"
+    }
+def notImplemented(context, queryParams):
+    return {
+        "statusCode": 404,
+        'headers': {'Access-Control-Allow-Origin': '*'},
+        "body": "Method not implemented."
+    }
+def serverError(message):
+    return {
+        "statusCode": 500,
+        'headers': {'Access-Control-Allow-Origin': '*'},
+        "body": f"An error occurred - {message}"
+    }
+def badRequest(message):
+    return {
+        "statusCode": 400,
+        'headers': {'Access-Control-Allow-Origin': '*'},
+        "body": f"Bad request - {message}"
+    }
+
+def userManagementHandler(context, queryParams):
+    #todo
+
+find_handler = {
+    "GET": {
+        "/api/v1/healthz": healthzHandler,
+        "/api/v1/create_user": userManagementHandler,
+    }
+}
 
 if __name__ == "__main__":
     netid = input("netid: ")
