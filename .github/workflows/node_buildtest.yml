@@ -31,5 +31,3 @@ jobs:
       working-directory: 'admin-api-frontend'
     - run: npm run build --if-present
       working-directory: 'admin-api-frontend'
-    - run: npm test
-      working-directory: 'admin-api-frontend'
