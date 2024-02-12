@@ -1,5 +1,5 @@
-import json
-import boto3
+import json, boto3
+from decimal import Decimal
 
 dynamodb = boto3.resource('dynamodb', region_name = 'us-east-1')
 table = dynamodb.Table('infra-admin-api')
@@ -65,18 +65,6 @@ def update_user(netid, newRoles, newPerms):
     
     return get_user(netid)
 
-def lambda_handler(event, context):
-    method = event['httpMethod']
-    path = event['path']
-    queryParams = event["queryStringParameters"]
-    if not queryParams:
-        queryParams = {}
-    print(f"INFO: Processing request: method {method}, path {path}.")
-    try:
-        return execute(method, path, queryParams, event['requestContext']['authorizer'])
-    except KeyError:
-        return execute(method, path, queryParams, {})
-
 def execute(method: str, path: str, queryParams: dict, context: dict) -> dict:
     try:
         func: function = find_handler[method][path]
@@ -110,15 +98,56 @@ def badRequest(message):
         "body": f"Bad request - {message}"
     }
 
-def userManagementHandler(context, queryParams):
-    #todo
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+        return json.JSONEncoder.default(self, obj)
+
+def createUserHandler(context, queryParams):    
+    try:
+        netid = queryParams["netid"];
+        roleStr = queryParams["roleStr"];
+        permStr = queryParams["permStr"];        
+    except:
+        return {
+            'statusCode': 404,
+            'body': "No netid/roles/permissions provided",
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
+        }
+    try:
+        create_user(netid, roleStr, permStr);
+        return {
+            'statusCode': 200, 
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, 
+            'body': json.dumps(item, cls=DecimalEncoder)
+        }
+    except Exception as e:
+        print(e)
+        return {
+            'statusCode': 500, 'body': json.dumps({'message', 'Error.'}),                 
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+        }
+        
 
 find_handler = {
     "GET": {
         "/api/v1/healthz": healthzHandler,
-        "/api/v1/create_user": userManagementHandler,
+        "/api/v1/create_user": createUserHandler,
     }
 }
+
+def lambda_handler(event, context):
+    method = event['httpMethod']
+    path = event['path']
+    queryParams = event["queryStringParameters"]
+    if not queryParams:
+        queryParams = {}
+    print(f"INFO: Processing request: method {method}, path {path}.")
+    try:
+        return execute(method, path, queryParams, event['requestContext']['authorizer'])
+    except KeyError:
+        return execute(method, path, queryParams, {})
 
 if __name__ == "__main__":
     netid = input("netid: ")
