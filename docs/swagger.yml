@@ -138,7 +138,7 @@ paths:
         - in: query
           name: newPerms
           schema: null
-          type: string
+            type: string
           required: true
           description: updates with new permission
       responses:
