@@ -2,6 +2,7 @@
   "name": "admin-api-frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage" : "/admin-api",
   "dependencies": {
     "@nextui-org/react": "^2.2.9",
     "@testing-library/jest-dom": "^5.17.0",
