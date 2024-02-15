@@ -126,7 +126,7 @@ Resources:
           Name: AWS::Include
           Parameters:
             Location: ../docs/swagger.yml
-      Domain: !If [UseCustomDomainNameCond, {DomainName: !Ref CustomDomainName, CertificateArn: !Ref CustomCertificateArn}, !Ref 'AWS::NoValue']
+      #Domain: !If [UseCustomDomainNameCond, {DomainName: !Ref CustomDomainName, CertificateArn: !Ref CustomCertificateArn}, !Ref 'AWS::NoValue']
       StageName: default
 
   AdminAPIGatewayLatencyAlarm:
