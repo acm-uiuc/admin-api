@@ -25,7 +25,7 @@ Parameters:
 
 
 Conditions:
-  UseCustomDomainNameCond: !Equals [!Ref UseCustomDomainName, true]
+  UseCustomDomainNameCond: !Equals [!Ref UseCustomDomainName, false]
   IsProd: !Equals [!Ref Env, 'prod']
 
 Resources:
