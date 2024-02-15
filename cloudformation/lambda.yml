@@ -15,7 +15,7 @@ Parameters:
 
   UseCustomDomainName:
     Type: String
-    Default: true
+    Default: false
     AllowedValues: [ true, false ]
 
   UserManagementLambdaName:
@@ -25,7 +25,7 @@ Parameters:
 
 
 Conditions:
-  UseCustomDomainNameCond: !Equals [!Ref UseCustomDomainName, false]
+  UseCustomDomainNameCond: !Equals [!Ref UseCustomDomainName, true]
   IsProd: !Equals [!Ref Env, 'prod']
 
 Resources:
