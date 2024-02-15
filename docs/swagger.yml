@@ -137,7 +137,7 @@ paths:
           description: updates with new role
         - in: query
           name: newPerms
-          schema:
+          schema: null
             type: string
           required: true
           description: updates with new permission
