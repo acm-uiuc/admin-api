@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "../CommonStyles/styles.css";
 import { Input, Button } from "@nextui-org/react";
 
 const RemoveRolesForm = () => {
