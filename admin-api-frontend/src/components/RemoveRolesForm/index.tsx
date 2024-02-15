@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import "../../CommonStyles/styles.css";
+import "../CommonStyles/styles.css";
 
-const CreateUserForm = () => {
+const RemoveRolesForm = () => {
   const [netID, setNetID] = useState<string>("");
   const [roles, setRoles] = useState<string>("");
   const [rolesSplit, setRolesSplit] = useState<string[]>([]);
-
-  const [permissions, setPermissions] = useState<string>("");
-  const [permissionsSplit, setPermissionsSplit] = useState<string[]>([]);
 
   const handleNetIDChange = (event) => {
     setNetID(event.target.value);
@@ -16,11 +13,6 @@ const CreateUserForm = () => {
   const handleRolesChange = (event) => {
     setRoles(event.target.value);
     setRolesSplit(event.target.value.split(","));
-  };
-
-  const handlePermissionsChange = (event) => {
-    setPermissions(event.target.value);
-    setPermissionsSplit(event.target.value.split(","));
   };
 
   const handleSubmit = (event) => {
@@ -32,17 +24,15 @@ const CreateUserForm = () => {
 
       event.preventDefault();
       setRolesSplit([]);
-      setPermissionsSplit([]);
       setNetID("");
       setRoles("");
-      setPermissions("");
     }
   };
 
   return (
     <>
       <div>
-        <p>CreateUserForm</p>
+        <p>RemoveRolesForm</p>
         <form onSubmit={handleSubmit}>
           <div className="form-container">
             <label>
@@ -53,13 +43,6 @@ const CreateUserForm = () => {
               Roles:
               <textarea value={roles} onChange={handleRolesChange} />
             </label>
-            <label>
-              Perms:
-              <textarea
-                value={permissions}
-                onChange={handlePermissionsChange}
-              />
-            </label>
             <input type="submit" value="Submit" />
           </div>
         </form>
@@ -67,4 +50,4 @@ const CreateUserForm = () => {
     </>
   );
 };
-export default CreateUserForm;
+export default RemoveRolesForm;

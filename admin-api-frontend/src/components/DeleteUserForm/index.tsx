@@ -1,11 +1,7 @@
 import React, { useState } from "react";
+import { Input, Button } from "@nextui-org/react";
 
-interface CommonFormProps {
-  name: String;
-  backendFunction: () => void;
-}
-
-const CommonForm: React.FC<CommonFormProps> = ({ name, backendFunction }) => {
+const DeleteUserForm = () => {
   const [netID, setNetID] = useState<string>("");
 
   const handleNetIDChange = (event) => {
@@ -25,18 +21,18 @@ const CommonForm: React.FC<CommonFormProps> = ({ name, backendFunction }) => {
   return (
     <>
       <div>
-        <p>{name}</p>
+        <p>DeleteUserForm</p>
         <form onSubmit={handleSubmit}>
           <div className="form-container">
             <label>
               NetID:
-              <textarea value={netID} onChange={handleNetIDChange} />
+              <Input value={netID} onChange={handleNetIDChange} />
             </label>
-            <input type="submit" value="Submit" />
+            <Button type="submit">Submit</Button>
           </div>
         </form>
       </div>
     </>
   );
 };
-export default CommonForm;
+export default DeleteUserForm;
