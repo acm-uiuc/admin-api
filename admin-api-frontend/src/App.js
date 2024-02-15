@@ -13,13 +13,13 @@ function App() {
       <div className="App">
         <header className="App-header">
           <p>ACM Admin API </p>
-          <p>also roles should be comma separated </p>
+          <p>Roles should be comma separated </p>
           <div className="Form-container">
-            <CreateUserForm />
             <DeleteUserForm />
             <GetUserInfoForm />
             <RemoveRolesForm />
             <AddRolesForm />
+            <CreateUserForm />
           </div>
         </header>
       </div>

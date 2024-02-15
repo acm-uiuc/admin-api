@@ -19,20 +19,21 @@ const GetUserInfoForm = () => {
   };
 
   return (
-    <>
-      <div>
-        <p>GetUserInfoForm</p>
-        <form onSubmit={handleSubmit}>
-          <div className="form-container">
-            <label>
-              NetID:
-              <Input value={netID} onChange={handleNetIDChange} />
-            </label>
-            <Button type="submit">Submit</Button>
+    <div>
+      <p>Get User</p>
+      <form onSubmit={handleSubmit}>
+        <div class="flex flex-col m-2">
+          <div class="mb-2">
+            <Input
+              placeholder="NetID"
+              value={netID}
+              onChange={handleNetIDChange}
+            />
           </div>
-        </form>
-      </div>
-    </>
+          <Button type="submit">Submit</Button>
+        </div>
+      </form>
+    </div>
   );
 };
 export default GetUserInfoForm;

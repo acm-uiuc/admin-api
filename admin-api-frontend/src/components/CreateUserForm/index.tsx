@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../CommonStyles/styles.css";
+import { Input, Button } from "@nextui-org/react";
 
 const CreateUserForm = () => {
   const [netID, setNetID] = useState<string>("");
@@ -40,31 +41,35 @@ const CreateUserForm = () => {
   };
 
   return (
-    <>
-      <div>
-        <p>CreateUserForm</p>
-        <form onSubmit={handleSubmit}>
-          <div className="form-container">
-            <label>
-              NetID:
-              <textarea value={netID} onChange={handleNetIDChange} />
-            </label>
-            <label>
-              Roles:
-              <textarea value={roles} onChange={handleRolesChange} />
-            </label>
-            <label>
-              Perms:
-              <textarea
-                value={permissions}
-                onChange={handlePermissionsChange}
-              />
-            </label>
-            <input type="submit" value="Submit" />
+    <div>
+      <p>Create User</p>
+      <form onSubmit={handleSubmit}>
+        <div class="flex flex-col m-2">
+          <div class="mb-2">
+            <Input
+              placeholder="NetID"
+              value={netID}
+              onChange={handleNetIDChange}
+            />
           </div>
-        </form>
-      </div>
-    </>
+          <div class="mb-2">
+            <Input
+              placeholder="Roles"
+              value={roles}
+              onChange={handleRolesChange}
+            />
+          </div>
+          <div class="mb-2">
+            <Input
+              placeholder="Permissions"
+              value={permissions}
+              onChange={handlePermissionsChange}
+            />
+          </div>
+          <Button type="submit">Submit</Button>
+        </div>
+      </form>
+    </div>
   );
 };
 export default CreateUserForm;
