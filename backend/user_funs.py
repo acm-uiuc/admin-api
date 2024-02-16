@@ -128,12 +128,85 @@ def createUserHandler(context, queryParams):
             'statusCode': 500, 'body': json.dumps({'message', 'Error.'}),                 
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
         }
-        
+
+def getUserHandler(context, queryParams):    
+    try:
+        netid = queryParams["netid"];
+    except:
+        return {
+            'statusCode': 404,
+            'body': "No netid provided",
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
+        }
+    try:
+        get_user(netid);
+        return {
+            'statusCode': 200, 
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, 
+            'body': json.dumps(item, cls=DecimalEncoder)
+        }
+    except Exception as e:
+        print(e)
+        return {
+            'statusCode': 500, 'body': json.dumps({'message', 'Error.'}),                 
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+        }
+
+def deleteUserHandler(context, queryParams):    
+    try:
+        netid = queryParams["netid"];
+    except:
+        return {
+            'statusCode': 404,
+            'body': "No netid provided",
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
+        }
+    try:
+        delete_user(netid);
+        return {
+            'statusCode': 200, 
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, 
+            'body': json.dumps(item, cls=DecimalEncoder)
+        }
+    except Exception as e:
+        print(e)
+        return {
+            'statusCode': 500, 'body': json.dumps({'message', 'Error.'}),                 
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+        }
+
+def updateUserHandler(context, queryParams):    
+    try:
+        netid = queryParams["netid"];
+        newRoles = queryParams["newRoles"];
+        newPerms = queryParams["newPerms"];        
+    except:
+        return {
+            'statusCode': 404,
+            'body': "No netid/roles/permissions provided",
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
+        }
+    try:
+        update_user(netid, newRoles, newPerms);
+        return {
+            'statusCode': 200, 
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, 
+            'body': json.dumps(item, cls=DecimalEncoder)
+        }
+    except Exception as e:
+        print(e)
+        return {
+            'statusCode': 500, 'body': json.dumps({'message', 'Error.'}),                 
+            'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
+        }
 
 find_handler = {
     "GET": {
         "/api/v1/healthz": healthzHandler,
         "/api/v1/create_user": createUserHandler,
+        "/api/v1/get_user": getUserHandler,
+        "/api/v1/delete_user": deleteUserHandler,
+        "/api/v1/update_user": updateUserHandler,
     }
 }
 
