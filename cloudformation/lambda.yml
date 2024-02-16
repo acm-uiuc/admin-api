@@ -23,6 +23,11 @@ Parameters:
     AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
     Default: infra-admin-api-user-management-lambda
 
+  AdminAPIGWName:
+    Type: String
+    AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
+    Default: infra-admin-api-user-management-gw
+
 
 Conditions:
   UseCustomDomainNameCond: !Equals [!Ref UseCustomDomainName, true]
