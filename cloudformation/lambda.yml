@@ -118,6 +118,12 @@ Resources:
                   - !GetAtt MyDynamoDBTable.Arn
           PolicyName: lambda-dynamo
           
+  AdminAPIUserManagementLambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${LambdaFunctionName}
+      RetentionInDays: 7          
+      
   AdminAPIGateway:
     Type: AWS::Serverless::Api
     DependsOn: 
