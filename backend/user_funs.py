@@ -106,9 +106,9 @@ class DecimalEncoder(json.JSONEncoder):
 
 def createUserHandler(context, queryParams):    
     try:
-        netid = queryParams["netid"];
-        roleStr = queryParams["roleStr"];
-        permStr = queryParams["permStr"];        
+        netid = queryParams["netid"]
+        roleStr = queryParams["roleStr"]
+        permStr = queryParams["permStr"]        
     except:
         return {
             'statusCode': 404,
@@ -116,7 +116,7 @@ def createUserHandler(context, queryParams):
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
         }
     try:
-        create_user(netid, roleStr, permStr);
+        create_user(netid, roleStr, permStr)
         return {
             'statusCode': 200, 
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, 
@@ -131,7 +131,7 @@ def createUserHandler(context, queryParams):
 
 def getUserHandler(context, queryParams):    
     try:
-        netid = queryParams["netid"];
+        netid = queryParams["netid"]
     except:
         return {
             'statusCode': 404,
@@ -139,7 +139,7 @@ def getUserHandler(context, queryParams):
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
         }
     try:
-        get_user(netid);
+        get_user(netid)
         return {
             'statusCode': 200, 
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, 
@@ -154,7 +154,7 @@ def getUserHandler(context, queryParams):
 
 def deleteUserHandler(context, queryParams):    
     try:
-        netid = queryParams["netid"];
+        netid = queryParams["netid"]
     except:
         return {
             'statusCode': 404,
@@ -162,7 +162,7 @@ def deleteUserHandler(context, queryParams):
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
         }
     try:
-        delete_user(netid);
+        delete_user(netid)
         return {
             'statusCode': 200, 
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, 
@@ -177,9 +177,9 @@ def deleteUserHandler(context, queryParams):
 
 def updateUserHandler(context, queryParams):    
     try:
-        netid = queryParams["netid"];
-        newRoles = queryParams["newRoles"];
-        newPerms = queryParams["newPerms"];        
+        netid = queryParams["netid"]
+        newRoles = queryParams["newRoles"]
+        newPerms = queryParams["newPerms"]
     except:
         return {
             'statusCode': 404,
@@ -187,7 +187,7 @@ def updateUserHandler(context, queryParams):
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
         }
     try:
-        update_user(netid, newRoles, newPerms);
+        update_user(netid, newRoles, newPerms)
         return {
             'statusCode': 200, 
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, 
