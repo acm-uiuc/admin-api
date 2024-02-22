@@ -117,6 +117,7 @@ def createUserHandler(context, queryParams):
         }
     try:
         create_user(netid, roleStr, permStr)
+        item = get_user(netid)
         return {
             'statusCode': 200, 
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, 
@@ -139,7 +140,7 @@ def getUserHandler(context, queryParams):
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
         }
     try:
-        get_user(netid)
+        item = get_user(netid)
         return {
             'statusCode': 200, 
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, 
@@ -162,6 +163,7 @@ def deleteUserHandler(context, queryParams):
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}
         }
     try:
+        item = get_user(netid)
         delete_user(netid)
         return {
             'statusCode': 200, 
@@ -181,6 +183,7 @@ def updateUserHandler(context, queryParams):
         newRoles = queryParams["newRoles"]
         newPerms = queryParams["newPerms"]
     except:
+        item = get_user(netid)
         return {
             'statusCode': 404,
             'body': "No netid/roles/permissions provided",
@@ -221,22 +224,3 @@ def lambda_handler(event, context):
         return execute(method, path, queryParams, event['requestContext']['authorizer'])
     except KeyError:
         return execute(method, path, queryParams, {})
-
-if __name__ == "__main__":
-    netid = input("netid: ")
-    roles = input("roles: ")
-    perms = input("perms: ")
-
-    create_user(netid, roles, perms)
-
-    print(f"getting user: {get_user(netid)}")
-
-    print(f"updating user: {update_user(netid, '11, 22', '  22  , 11 ')}")
-
-    print("deleting user")
-
-    delete_user(netid)
-
-    print(f"getting user: {get_user(netid)}")
-
-    print(f"updating user: {update_user(netid, '11, 22', '  22  , 11 ')}")
