@@ -183,7 +183,6 @@ def updateUserHandler(context, queryParams):
         newRoles = queryParams["newRoles"]
         newPerms = queryParams["newPerms"]
     except:
-        item = get_user(netid)
         return {
             'statusCode': 404,
             'body': "No netid/roles/permissions provided",
@@ -191,6 +190,7 @@ def updateUserHandler(context, queryParams):
         }
     try:
         update_user(netid, newRoles, newPerms)
+        item = get_user(netid)
         return {
             'statusCode': 200, 
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'}, 
