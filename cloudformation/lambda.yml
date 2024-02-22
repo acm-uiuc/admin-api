@@ -88,7 +88,7 @@ Resources:
       Action: "lambda:InvokeFunction"
       Principal: apigateway.amazonaws.com
       FunctionName: !Ref AdminAPIUserManagementLambda
-    DependsOn: AdminAPIGWName
+    DependsOn: AdminAPIGateway
   
   AdminAPIUserManagementLambdaIAMRole:
     Type: AWS::IAM::Role
