@@ -81,6 +81,14 @@ Resources:
       Dimensions:
         - Name: 'FunctionName'
           Value: !Ref AdminAPIUserManagementLambda
+
+  LambdaFunctionPermission:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      Action: "lambda:InvokeFunction"
+      Principal: apigateway.amazonaws.com
+      FunctionName: !Ref MyLambdaFunction
+    DependsOn: MyWebSocket
   
   AdminAPIUserManagementLambdaIAMRole:
     Type: AWS::IAM::Role
