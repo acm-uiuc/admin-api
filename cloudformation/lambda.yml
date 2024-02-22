@@ -121,7 +121,7 @@ Resources:
   AdminAPIUserManagementLambdaLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Sub /aws/lambda/${LambdaFunctionName}
+      LogGroupName: !Sub /aws/lambda/${UserManagementLambdaName}
       RetentionInDays: 7          
       
   AdminAPIGateway:
