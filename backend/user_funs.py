@@ -126,7 +126,7 @@ def createUserHandler(context, queryParams):
     except Exception as e:
         print(e)
         return {
-            'statusCode': 500, 'body': json.dumps({'message', 'Error.'}),                 
+            'statusCode': 500, 'body': json.dumps({'message': 'Error.'}),                 
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
         }
 
@@ -149,7 +149,7 @@ def getUserHandler(context, queryParams):
     except Exception as e:
         print(e)
         return {
-            'statusCode': 500, 'body': json.dumps({'message', 'Error.'}),                 
+            'statusCode': 500, 'body': json.dumps({'message': 'Error.'}),                 
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
         }
 
@@ -173,7 +173,7 @@ def deleteUserHandler(context, queryParams):
     except Exception as e:
         print(e)
         return {
-            'statusCode': 500, 'body': json.dumps({'message', 'Error.'}),                 
+            'statusCode': 500, 'body': json.dumps({'message': 'Error.'}),                 
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
         }
 
@@ -199,7 +199,7 @@ def updateUserHandler(context, queryParams):
     except Exception as e:
         print(e)
         return {
-            'statusCode': 500, 'body': json.dumps({'message', 'Error.'}),                 
+            'statusCode': 500, 'body': json.dumps({'message': 'Error.'}),                 
             'headers': {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'},
         }
 
