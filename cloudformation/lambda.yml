@@ -121,8 +121,8 @@ Resources:
                   - dynamodb:GetItem
                   - dynamodb:Scan
                   - dynamodb:UpdateItem
-                  - dynamodb: DeleteItem
-                  - dynamodb: PutItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:PutItem
                 Effect: Allow
                 Resource:
                   - !GetAtt MyDynamoDBTable.Arn
