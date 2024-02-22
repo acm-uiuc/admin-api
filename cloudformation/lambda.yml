@@ -87,8 +87,8 @@ Resources:
     Properties:
       Action: "lambda:InvokeFunction"
       Principal: apigateway.amazonaws.com
-      FunctionName: !Ref MyLambdaFunction
-    DependsOn: MyWebSocket
+      FunctionName: !Ref AdminAPIUserManagementLambda
+    DependsOn: AdminAPIGWName
   
   AdminAPIUserManagementLambdaIAMRole:
     Type: AWS::IAM::Role
