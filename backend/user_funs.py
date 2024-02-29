@@ -207,11 +207,11 @@ find_handler = {
     "GET": {
         "/api/v1/healthz": healthzHandler,
         "/api/v1/get_user": getUserHandler,
-    }
+    },
     "PUT": {
         "/api/v1/create_user": createUserHandler,
         "/api/v1/update_user": updateUserHandler,
-    }
+    },
     "DELETE": {
         "/api/v1/delete_user": deleteUserHandler,
     }
