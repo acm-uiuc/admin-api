@@ -29,7 +29,7 @@ paths:
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${AdminAPIUserManagementLambda}/invocations
   /api/v1/create_user:
-    get:
+    put:
       summary: Creates a user
       operationId: createUser
       parameters:
@@ -93,7 +93,7 @@ paths:
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${AdminAPIUserManagementLambda}/invocations
   /api/v1/delete_user:
-    get:
+    delete:
       summary: Deletes a User
       operationId: deleteUser
       parameters:
@@ -119,7 +119,7 @@ paths:
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${AdminAPIUserManagementLambda}/invocations
   /api/v1/update_user:
-    get:
+    put:
       summary: updates existing user
       operationId: updateUser
       parameters:
