@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Input, Button } from "@nextui-org/react";
+import { create_user } from "../../api.js";
 
 const CreateUserForm = () => {
   const [netID, setNetID] = useState<string>("");
@@ -29,7 +30,7 @@ const CreateUserForm = () => {
       console.log(rolesSplit);
       console.log(permissionsSplit);
       // Do something with the netID, roles and permissions
-
+      //call create user here
       event.preventDefault();
       setRolesSplit([]);
       setPermissionsSplit([]);
