@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Input, Button } from "@nextui-org/react";
-import { create_user } from "../../api.js";
+// import { create_user } from "../../api.js";
+import axios from "axios";
 
 const CreateUserForm = () => {
   const [netID, setNetID] = useState<string>("");
@@ -29,6 +30,18 @@ const CreateUserForm = () => {
       console.log(netID);
       console.log(rolesSplit);
       console.log(permissionsSplit);
+      axios
+        .put(`${BASE_URL}/default/api/v1/create_user`, null, {
+          params: {
+            netid: netID,
+            permStr: permissions,
+            roleStr: roles,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          console.log(res.data);
+        });
       // Do something with the netID, roles and permissions
       //call create user here
       event.preventDefault();
@@ -44,22 +57,22 @@ const CreateUserForm = () => {
     <div>
       <p>Create User</p>
       <form onSubmit={handleSubmit}>
-        <div class="flex flex-col m-2">
-          <div class="mb-2">
+        <div className="flex flex-col m-2">
+          <div className="mb-2">
             <Input
               placeholder="NetID"
               value={netID}
               onChange={handleNetIDChange}
             />
           </div>
-          <div class="mb-2">
+          <div className="mb-2">
             <Input
               placeholder="Roles"
               value={roles}
               onChange={handleRolesChange}
             />
           </div>
-          <div class="mb-2">
+          <div className="mb-2">
             <Input
               placeholder="Permissions"
               value={permissions}

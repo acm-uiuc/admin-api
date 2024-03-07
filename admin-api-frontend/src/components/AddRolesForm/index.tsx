@@ -33,15 +33,15 @@ const AddRolesForm = () => {
     <div>
       <p>Add Roles</p>
       <form onSubmit={handleSubmit}>
-        <div class="flex flex-col m-2">
-          <div class="mb-2">
+        <div className="flex flex-col m-2">
+          <div className="mb-2">
             <Input
               placeholder="NetID"
               value={netID}
               onChange={handleNetIDChange}
             />
           </div>
-          <div class="mb-2">
+          <div className="mb-2">
             <Input
               placeholder="Roles"
               value={roles}
