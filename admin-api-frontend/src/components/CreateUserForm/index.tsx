@@ -7,10 +7,7 @@ const CreateUserForm = () => {
 
   const [netID, setNetID] = useState<string>("");
   const [roles, setRoles] = useState<string>("");
-  const [rolesSplit, setRolesSplit] = useState<string[]>([]);
-
   const [permissions, setPermissions] = useState<string>("");
-  const [permissionsSplit, setPermissionsSplit] = useState<string[]>([]);
 
   const handleNetIDChange = (event) => {
     setNetID(event.target.value);
@@ -18,12 +15,10 @@ const CreateUserForm = () => {
 
   const handleRolesChange = (event) => {
     setRoles(event.target.value);
-    setRolesSplit(event.target.value.split(","));
   };
 
   const handlePermissionsChange = (event) => {
     setPermissions(event.target.value);
-    setPermissionsSplit(event.target.value.split(","));
   };
 
   const handleCreateUser = async () => {
@@ -47,15 +42,10 @@ const CreateUserForm = () => {
 
   const handleSubmit = (event) => {
     if (netID !== "" && roles !== "") {
-      console.log(netID);
-      console.log(rolesSplit);
-      console.log(permissionsSplit);
+      // This handles the API call
       handleCreateUser();
-      // Do something with the netID, roles and permissions
-      //call create user here
+
       event.preventDefault();
-      setRolesSplit([]);
-      setPermissionsSplit([]);
       setNetID("");
       setRoles("");
       setPermissions("");
