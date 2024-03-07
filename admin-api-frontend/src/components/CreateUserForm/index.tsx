@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Input, Button } from "@nextui-org/react";
-// import { create_user } from "../../api.js";
 import axios from "axios";
 
 const CreateUserForm = () => {
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
+
   const [netID, setNetID] = useState<string>("");
   const [roles, setRoles] = useState<string>("");
   const [rolesSplit, setRolesSplit] = useState<string[]>([]);
@@ -25,23 +26,31 @@ const CreateUserForm = () => {
     setPermissionsSplit(event.target.value.split(","));
   };
 
-  const handleSubmit = (event) => {
-    if (netID !== "" && roles !== "") {
-      console.log(netID);
-      console.log(rolesSplit);
-      console.log(permissionsSplit);
-      axios
-        .put(`${BASE_URL}/default/api/v1/create_user`, null, {
+  const handleCreateUser = async () => {
+    try {
+      const response = await axios.put(
+        `${BASE_URL}/default/api/v1/create_user`,
+        null,
+        {
           params: {
             netid: netID,
             permStr: permissions,
             roleStr: roles,
           },
-        })
-        .then((res) => {
-          console.log(res);
-          console.log(res.data);
-        });
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = (event) => {
+    if (netID !== "" && roles !== "") {
+      console.log(netID);
+      console.log(rolesSplit);
+      console.log(permissionsSplit);
+      handleCreateUser();
       // Do something with the netID, roles and permissions
       //call create user here
       event.preventDefault();
