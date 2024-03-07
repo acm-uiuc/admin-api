@@ -142,6 +142,10 @@ Resources:
       Name: !Ref AdminAPIGWName
       Description: Admin API Gateway
       AlwaysDeploy: True
+      Cors:
+        AllowHeaders: "'*'"
+        AllowMethods: "'*'"
+        AllowOrigin: "'*'"
       DefinitionBody:
         Fn::Transform:
           Name: AWS::Include
