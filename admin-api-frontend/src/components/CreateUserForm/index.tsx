@@ -9,18 +9,6 @@ const CreateUserForm = () => {
   const [roles, setRoles] = useState<string>("");
   const [permissions, setPermissions] = useState<string>("");
 
-  const handleNetIDChange = (event) => {
-    setNetID(event.target.value);
-  };
-
-  const handleRolesChange = (event) => {
-    setRoles(event.target.value);
-  };
-
-  const handlePermissionsChange = (event) => {
-    setPermissions(event.target.value);
-  };
-
   const handleCreateUser = async () => {
     try {
       const response = await axios.put(
@@ -61,21 +49,21 @@ const CreateUserForm = () => {
             <Input
               placeholder="NetID"
               value={netID}
-              onChange={handleNetIDChange}
+              onChange={(event) => setNetID(event.target.value)}
             />
           </div>
           <div className="mb-2">
             <Input
               placeholder="Roles"
               value={roles}
-              onChange={handleRolesChange}
+              onChange={(event) => setRoles(event.target.value)}
             />
           </div>
           <div className="mb-2">
             <Input
               placeholder="Permissions"
               value={permissions}
-              onChange={handlePermissionsChange}
+              onChange={(event) => setPermissions(event.target.value)}
             />
           </div>
           <Button type="submit">Submit</Button>
