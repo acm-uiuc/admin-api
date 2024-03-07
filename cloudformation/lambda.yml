@@ -1,6 +1,37 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: CloudFormation Template for DynamoDB Table
+Description: Admin API Backend
 Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  Env:
+    Description: Environment
+    Type: String
+    AllowedValues: [ 'dev', 'prod' ]
+
+  AlertSNSArn:
+    Description: SNS Queue to send alarm alerts to
+    Type: String
+    Default: arn:aws:sns:us-east-1:298118738376:infra-monitor-alerts
+
+  UseCustomDomainName:
+    Type: String
+    Default: false
+    AllowedValues: [ true, false ]
+
+  UserManagementLambdaName:
+    Type: String
+    AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
+    Default: infra-admin-api-user-management-lambda
+
+  AdminAPIGWName:
+    Type: String
+    AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
+    Default: infra-admin-api-user-management-gw
+
+
+Conditions:
+  UseCustomDomainNameCond: !Equals [!Ref UseCustomDomainName, true]
+  IsProd: !Equals [!Ref Env, 'prod']
 
 Resources:
   MyDynamoDBTable:
@@ -18,6 +49,150 @@ Resources:
         WriteCapacityUnits: 1
       PointInTimeRecoverySpecification:
         PointInTimeRecoveryEnabled: true
+
+  AdminAPIUserManagementLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../backend
+      AutoPublishAlias: live
+      Runtime: python3.10
+      Description: User Management Lambda
+      FunctionName: !Ref UserManagementLambdaName
+      Handler: user_funs.lambda_handler
+      MemorySize: 2048
+      Role: !GetAtt AdminAPIUserManagementLambdaIAMRole.Arn
+      Timeout: 5
+
+  AdminAPIUserManagementLambdaFunctionErrorAlarm:
+    Type: 'AWS::Cloudwatch::Alarm'
+    Condition: IsProd
+    Properties: 
+      AlarmName: !Sub '${UserManagementLambdaName}-alarm'
+      AlarmDescription: !Sub 'Alarm if ${UserManagementLambdaName} function errors are detected.'
+      Namespace: 'AWS/Lambda'
+      MetricName: 'Errors'
+      Statistic: 'Sum'
+      Period: '60'
+      EvaluationPeriods: '1'
+      ComparisonOperator: 'GreaterThanThreshold'
+      Threshold: '0'
+      AlarmActions:
+        - !Ref AlertSNSArn
+      Dimensions:
+        - Name: 'FunctionName'
+          Value: !Ref AdminAPIUserManagementLambda
+
+  LambdaFunctionPermission:
+    Type: "AWS::Lambda::Permission"
+    Properties:
+      Action: "lambda:InvokeFunction"
+      Principal: apigateway.amazonaws.com
+      FunctionName: !Ref AdminAPIUserManagementLambda
+    DependsOn: AdminAPIGateway
+  
+  AdminAPIUserManagementLambdaIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+      Policies:
+        - PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Effect: Allow
+                Resource:
+                  - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${UserManagementLambdaName}:*
+          PolicyName: lambda
+        - PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - dynamodb:GetItem
+                  - dynamodb:Scan
+                  - dynamodb:UpdateItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:PutItem
+                Effect: Allow
+                Resource:
+                  - !GetAtt MyDynamoDBTable.Arn
+          PolicyName: lambda-dynamo
+          
+  AdminAPIUserManagementLambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${UserManagementLambdaName}
+      RetentionInDays: 7          
+      
+  AdminAPIGateway:
+    Type: AWS::Serverless::Api
+    DependsOn: 
+      - AdminAPIUserManagementLambda
+    Properties:
+      Name: !Ref AdminAPIGWName
+      Description: Admin API Gateway
+      AlwaysDeploy: True
+      Cors:
+        AllowHeaders: "'*'"
+        AllowMethods: "'*'"
+        AllowOrigin: "'*'"
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: ../docs/swagger.yml
+      #Domain: !If [UseCustomDomainNameCond, {DomainName: !Ref CustomDomainName, CertificateArn: !Ref CustomCertificateArn}, !Ref 'AWS::NoValue']
+      StageName: default
+
+  AdminAPIGatewayLatencyAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    Condition: IsProd
+    Properties:
+      AlarmName: !Sub '${AdminAPIGWName}-latency-alarm'
+      AlarmDescription: !Sub 'Alarm if ${AdminAPIGWName} API gateway latency is > 2s.'
+      Namespace: 'AWS/ApiGateway'
+      MetricName: 'Latency'
+      Statistic: 'Average'
+      Period: '60'
+      EvaluationPeriods: '1'
+      ComparisonOperator: 'GreaterThanThreshold'
+      Threshold: '2000'
+      AlarmActions:
+        - !Ref AlertSNSArn
+      Dimensions:
+        - Name: 'ApiName'
+          Value: !Ref AdminAPIGWName
+
+  AdminAPIGateway5XXErrorAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    Condition: IsProd
+    Properties:
+      AlarmName: !Sub '${AdminAPIGWName}-5XX-alarm'
+      AlarmDescription: !Sub 'Alarm if ${AdminAPIGWName} API gateway 5XX errors are detected.'
+      Namespace: 'AWS/ApiGateway'
+      MetricName: '5XXError'
+      Statistic: 'Average'
+      Period: '60'
+      EvaluationPeriods: '1'
+      ComparisonOperator: 'GreaterThanThreshold'
+      Threshold: '2'
+      AlarmActions:
+        - !Ref AlertSNSArn
+      Dimensions:
+        - Name: 'ApiName'
+          Value: !Ref AdminAPIGWName
+
+
 
 Outputs:
   DynamoDBTableName:
