@@ -4,27 +4,47 @@ import AddRolesForm from "./components/AddRolesForm/index.tsx";
 import RemoveRolesForm from "./components/RemoveRolesForm/index.tsx";
 import CreateUserForm from "./components/CreateUserForm/index.tsx";
 import DeleteUserForm from "./components/DeleteUserForm/index.tsx";
-
+import { MsalProvider } from '@azure/msal-react';
 import { NextUIProvider } from "@nextui-org/react";
+import { MsalAuthenticationTemplate } from '@azure/msal-react';
+import { InteractionType } from '@azure/msal-browser';
+import { loginRequest } from "./authConfig";
 
-function App() {
+
+const App = ({ instance }) => {
+  const authRequest = {
+    ...loginRequest,
+  };
+  let acct = instance.getActiveAccount();
+  if (!acct) {
+    console.error("Ah fuck!")
+    return null;
+  }
+  console.log(acct);
   return (
-    <NextUIProvider>
-      <div className="App">
-        <header className="App-header">
-          <p>ACM Admin API </p>
-          <p>Roles and permissions should be comma separated </p>
-          <div className="Form-container">
-            <DeleteUserForm />
-            <GetUserInfoForm />
-            <RemoveRolesForm />
-            <AddRolesForm />
-            <CreateUserForm />
+    <MsalProvider instance={instance}>
+      <MsalAuthenticationTemplate
+        interactionType={InteractionType.Redirect}
+        authenticationRequest={authRequest}>
+        <NextUIProvider>
+          <div className="App">
+            <header className="App-header">
+              <p>ACM Admin API</p>
+              <p>Welcome {acct["name"]}!</p>
+              <p>Roles and permissions should be comma separated </p>
+              <div className="Form-container">
+                <DeleteUserForm />
+                <GetUserInfoForm />
+                <RemoveRolesForm />
+                <AddRolesForm />
+                <CreateUserForm />
+              </div>
+            </header>
           </div>
-        </header>
-      </div>
-    </NextUIProvider>
+        </NextUIProvider>
+      </MsalAuthenticationTemplate>
+    </MsalProvider>
   );
-}
+};
 
 export default App;
