@@ -4,6 +4,23 @@ import { Input, Button } from "@nextui-org/react";
 const DeleteUserForm = () => {
   const [netID, setNetID] = useState<string>("");
 
+  const handleDeleteUser = async () => {
+    try {
+      const response = await axios.delete(
+        `${BASE_URL}/default/api/v1/delete_user`,
+        null,
+        {
+          params: {
+            netid: netID,
+          },
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleNetIDChange = (event) => {
     setNetID(event.target.value);
   };
@@ -14,6 +31,7 @@ const DeleteUserForm = () => {
       // Do something with the netID
 
       event.preventDefault();
+      handleDeleteUser();
       setNetID("");
     }
   };
