@@ -4,6 +4,23 @@ import { Input, Button } from "@nextui-org/react";
 const GetUserInfoForm = () => {
   const [netID, setNetID] = useState<string>("");
 
+  const handleGetUser = async () => {
+    try {
+      const response = await axios.put(
+        `${BASE_URL}/default/api/v1/get_user`,
+        null,
+        {
+          params: {
+            netid: netID,
+          },
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleNetIDChange = (event) => {
     setNetID(event.target.value);
   };
@@ -14,6 +31,7 @@ const GetUserInfoForm = () => {
       // Do something with the netID
 
       event.preventDefault();
+      handleGetUser();
       setNetID("");
     }
   };
