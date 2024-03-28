@@ -11,7 +11,6 @@ const DeleteUserForm = () => {
     try {
       const response = await axios.delete(
         `${BASE_URL}/default/api/v1/delete_user`,
-        null,
         {
           params: {
             netid: netID,
@@ -32,9 +31,8 @@ const DeleteUserForm = () => {
     if (netID !== "") {
       console.log(netID);
       // Do something with the netID
-
-      event.preventDefault();
       handleDeleteUser();
+      event.preventDefault();
       setNetID("");
     }
   };
