@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Input, Button } from "@nextui-org/react";
+import axios from "axios";
 
 const GetUserInfoForm = () => {
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
+
   const [netID, setNetID] = useState<string>("");
 
   const handleGetUser = async () => {
