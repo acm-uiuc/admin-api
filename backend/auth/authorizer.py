@@ -4,7 +4,7 @@ from auth_utils import AuthPolicy
 def lambda_handler(event, context):
     """Do not print the auth token unless absolutely necessary """
     method, token = event['authorizationToken'].split(' ')
-    #print("Client token: " + event['authorizationToken'])
+    print("Client token: " + event['authorizationToken'])
     print("Method ARN: " + event['methodArn'])
     
     principalId = token
