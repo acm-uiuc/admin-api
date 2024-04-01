@@ -28,6 +28,10 @@ Parameters:
     AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
     Default: infra-admin-api-user-management-gw
 
+  AuthLambdaFunctionName:
+    Type: String
+    AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
+    Default: infra-admin-api-auth-lambda
 
 Conditions:
   UseCustomDomainNameCond: !Equals [!Ref UseCustomDomainName, true]
@@ -151,6 +155,11 @@ Resources:
           Name: AWS::Include
           Parameters:
             Location: ../docs/swagger.yml
+      Auth:
+        Authorizers:
+          CombinedAuthorizer:
+            FunctionArn: !GetAtt AdminAPIAuthLambdaFunction.Arn
+          
       #Domain: !If [UseCustomDomainNameCond, {DomainName: !Ref CustomDomainName, CertificateArn: !Ref CustomCertificateArn}, !Ref 'AWS::NoValue']
       StageName: default
 
@@ -192,6 +201,90 @@ Resources:
         - Name: 'ApiName'
           Value: !Ref AdminAPIGWName
 
+  AdminAPIAuthLambdaFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeURI: ../backend/auth/
+      AutoPublishAlias: live
+      Runtime: python3.10
+      Description: Admin API Auth Lambda
+      FunctionName: !Ref AuthLambdaFunctionName
+      Handler: authorizer.lambda_handler
+      MemorySize: 2048
+      Role: !GetAtt AdminAPIAuthLambdaIAMRole.Arn
+      Timeout: 5
+  
+  AdminAPIAuthLambdaFunctionErrorAlarm:
+    Type: 'AWS::Cloudwatch::Alarm'
+    Condition: IsProd
+    Properties: 
+      AlarmName: !Sub '${AuthLambdaFunctionName}-alarm'
+      AlarmDescription: !Sub 'Alarm if ${AuthLambdaFunctionName} function errors are detected.'
+      Namespace: 'AWS/Lambda'
+      MetricName: 'Errors'
+      Statistic: 'Sum'
+      Period: '60'
+      EvaluationPeriods: '1'
+      ComparisonOperator: 'GreaterThanThreshold'
+      Threshold: '0'
+      AlarmActions:
+        - !Ref AlertSNSArn
+      Dimensions:
+        - Name: 'FunctionName'
+          Value: !Ref AdminAPIAuthLambdaFunction
+
+  AdminAPIAuthLambdaIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+                - apigateway.amazonaws.com
+      Policies:
+        - PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Effect: Allow
+                Resource:
+                  - !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/${AuthLambdaFunctionName}:*
+          PolicyName: lambda
+        - PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - dynamodb:GetItem
+                  - dynamodb:Scan
+                  - dynamodb:UpdateItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:PutItem
+                Effect: Allow
+                Resource:
+                  - !GetAtt MyDynamoDBTable.Arn
+          PolicyName: lambda-dynamo
+
+  AdminAPIAuthLambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${AuthLambdaFunctionName}
+      RetentionInDays: 7
+
+  AuthorizerPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt AdminAPIAuthLambdaFunction.Arn
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${AdminAPIGateway}/authorizers/*"
 
 
 Outputs:
