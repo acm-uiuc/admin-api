@@ -81,8 +81,8 @@ paths:
       responses:
         "200":
           description: OK
-      x-amazon-apigateway-auth:
-        type: NONE
+      security:
+        - CombinedAuthorizer: []
       x-amazon-apigateway-integration:
         responses:
           default:
@@ -107,8 +107,8 @@ paths:
       responses:
         "200":
           description: OK
-      x-amazon-apigateway-auth:
-        type: NONE
+      security:
+        - CombinedAuthorizer: []
       x-amazon-apigateway-integration:
         responses:
           default:
@@ -145,8 +145,8 @@ paths:
       responses:
         "200":
           description: OK
-      x-amazon-apigateway-auth:
-        type: NONE
+      security:
+        - CombinedAuthorizer: []
       x-amazon-apigateway-integration:
         responses:
           default:
