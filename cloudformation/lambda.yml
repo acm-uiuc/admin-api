@@ -204,7 +204,7 @@ Resources:
   AdminAPIAuthLambdaFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
-      CodeURI: ../backend/auth/
+      CodeUri: ../backend/auth/
       AutoPublishAlias: live
       Runtime: python3.10
       Description: Admin API Auth Lambda
