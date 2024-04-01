@@ -1,5 +1,6 @@
 from __future__ import print_function
 from auth_utils import AuthPolicy
+import json
 
 def lambda_handler(event, context):
     """Do not print the auth token unless absolutely necessary """
@@ -23,6 +24,7 @@ def lambda_handler(event, context):
 
     # Finally, build the policy
     authResponse = policy.build()
+    print("Auth response: " + json.dumps(authResponse, indent=4))
  
     # context = {
     #     'key': 'value', # $context.authorizer.key -> value
