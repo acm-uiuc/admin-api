@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { PublicClientApplication, EventType } from '@azure/msal-browser';
 
-import { msalConfig } from './authConfig.js';
+import { msalConfig, loginRequest } from './authConfig.js';
 import App from './App';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -33,8 +33,19 @@ msalInstance.addEventCallback((event) => {
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-root.render(
-    <BrowserRouter>
-        <App instance={msalInstance} />
-    </BrowserRouter>
-);
+if (!msalInstance.getActiveAccount()) {
+    await msalInstance.initialize();
+    msalInstance.loginPopup(loginRequest).then(response => {
+        root.render(
+            <BrowserRouter>
+                <App instance={msalInstance} />
+            </BrowserRouter>
+        );
+    });
+} else {
+    root.render(
+        <BrowserRouter>
+            <App instance={msalInstance} />
+        </BrowserRouter>
+    );
+}
