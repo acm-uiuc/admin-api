@@ -10,14 +10,8 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-<<<<<<< HEAD
-    "axios": "^1.6.7",
-    "crypto-browserify": "^3.12.0",
-    "dotenv": "^16.4.5",
-=======
     "@typescript-eslint/parser": "^7.4.0",
     "bootstrap": "^5.3.3",
->>>>>>> 6636f9350317b8d23dc5430a7c87516449160c53
     "framer-motion": "^11.0.5",
     "os-browserify": "^0.3.0",
     "path-browserify": "^1.0.1",

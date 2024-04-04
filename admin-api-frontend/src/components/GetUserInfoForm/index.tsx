@@ -11,7 +11,6 @@ const GetUserInfoForm = () => {
     try {
       const response = await axios.get(
         `${BASE_URL}/default/api/v1/get_user`,
-        null,
         {
           params: {
             netid: netID,
