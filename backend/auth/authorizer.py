@@ -2,7 +2,6 @@ from __future__ import print_function
 from auth_utils import AuthPolicy
 import json
 import requests
-from msal import ConfidentialClientApplication
 
 def lambda_handler(event, context):
     """Do not print the auth token unless absolutely necessary """
@@ -43,20 +42,13 @@ def lambda_handler(event, context):
         print("User is a member of the group.")
         policy.allowAllMethods()
     elif response.status_code == 404:
-        print("User is not a member of the group.")
+        raise Exception('Unauthorized')
     else:
-        print("Error occurred while checking group membership.")
-    #policy.allowAllMethods() # For now just let anyone in lol
+        # TODO: this returns a 500 error I think? is there a better way to do this
+        return "Error occurred while checking group membership."
 
     # Finally, build the policy
     authResponse = policy.build()
     print("Auth response: " + json.dumps(authResponse, indent=4))
- 
-    # context = {
-    #     'key': 'value', # $context.authorizer.key -> value
-    #     'number' : 1,
-    #     'bool' : True
-    # }
-    # authResponse['context'] = context
     
     return authResponse
