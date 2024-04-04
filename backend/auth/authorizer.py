@@ -24,19 +24,12 @@ def lambda_handler(event, context):
     # TODO: call Azure to determine if user is allowed to use API
     # if valid user, then allowAllMethods
     #tenant_id??
-    client_id = '-Mk8Q~u4TT1D4IXYZw13AWzkuCzQYN1C_qQHIad4Va'
-    client_secret = 'a3398439-19a7-4731-8f90-a8aabb72c1d9'
 
     # Define the user's object ID and the group's object ID
     user_object_id = '8412d538-534d-45f0-9a69-6b52eaf39560'
     group_object_id = 'GROUP_OBJECT_ID'
 
     # Create a Confidential Client Application instance
-    app = ConfidentialClientApplication(
-        client_id,
-        authority=f'https://login.microsoftonline.com/{tenant_id}',
-        client_credential=client_secret
-    )
 
     # Check if the user is a member of the group
     url = f"https://graph.microsoft.com/v1.0/groups/{group_object_id}/members/{user_object_id}/$ref"
