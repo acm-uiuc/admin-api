@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Input, Button } from "@nextui-org/react";
-import axios from "axios";
+import useFetchWithMsal from "../../hooks/useFetchWithMsal.jsx";
+import { loginRequest } from "../../authConfig.js";
 
 const CreateUserForm = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -9,20 +10,16 @@ const CreateUserForm = () => {
   const [roles, setRoles] = useState<string>("");
   const [permissions, setPermissions] = useState<string>("");
 
+  const { execute } = useFetchWithMsal(loginRequest);
   const handleCreateUser = async () => {
     try {
-      const response = await axios.put(
-        `${BASE_URL}/default/api/v1/create_user`,
-        null,
-        {
-          params: {
-            netid: netID,
-            permStr: permissions,
-            roleStr: roles,
-          },
-        }
-      );
-      console.log(response.data);
+      execute(
+        "PUT",
+        `${BASE_URL}/default/api/v1/create_user?netid=${netID}&permStr=${permissions}&roleStr=${roles}`,
+        null
+      ).then((response) => {
+        console.log(response);
+      });
     } catch (error) {
       console.log(error);
     }
@@ -30,9 +27,7 @@ const CreateUserForm = () => {
 
   const handleSubmit = (event) => {
     if (netID !== "" && roles !== "") {
-      // This handles the API call
       handleCreateUser();
-
       event.preventDefault();
       setNetID("");
       setRoles("");

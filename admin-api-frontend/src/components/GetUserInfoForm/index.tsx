@@ -1,37 +1,31 @@
 import React, { useState } from "react";
 import { Input, Button } from "@nextui-org/react";
-import axios from "axios";
+import useFetchWithMsal from "../../hooks/useFetchWithMsal.jsx";
+import { loginRequest } from "../../authConfig.js";
 
 const GetUserInfoForm = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   const [netID, setNetID] = useState<string>("");
 
+  const { execute } = useFetchWithMsal(loginRequest);
+
   const handleGetUser = async () => {
     try {
-      const response = await axios.get(
-        `${BASE_URL}/default/api/v1/get_user`,
-        {
-          params: {
-            netid: netID,
-          },
-        }
-      );
-      console.log(response.data);
+      execute(
+        "GET",
+        `${BASE_URL}/default/api/v1/get_user?netid=${netID}`,
+        null
+      ).then((response) => {
+        console.log(response);
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleNetIDChange = (event) => {
-    setNetID(event.target.value);
-  };
-
   const handleSubmit = (event) => {
     if (netID !== "") {
-      console.log(netID);
-      // Do something with the netID
-
       event.preventDefault();
       handleGetUser();
       setNetID("");
@@ -47,7 +41,7 @@ const GetUserInfoForm = () => {
             <Input
               placeholder="NetID"
               value={netID}
-              onChange={handleNetIDChange}
+              onChange={(event) => setNetID(event.target.value)}
             />
           </div>
           <Button type="submit">Submit</Button>

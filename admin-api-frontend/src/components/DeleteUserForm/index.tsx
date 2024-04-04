@@ -1,36 +1,30 @@
 import React, { useState } from "react";
 import { Input, Button } from "@nextui-org/react";
-import axios from "axios";
+import useFetchWithMsal from "../../hooks/useFetchWithMsal.jsx";
+import { loginRequest } from "../../authConfig.js";
 
 const DeleteUserForm = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   const [netID, setNetID] = useState<string>("");
 
+  const { execute } = useFetchWithMsal(loginRequest);
   const handleDeleteUser = async () => {
     try {
-      const response = await axios.delete(
-        `${BASE_URL}/default/api/v1/delete_user`,
-        {
-          params: {
-            netid: netID,
-          },
-        }
-      );
-      console.log(response.data);
+      execute(
+        "DELETE",
+        `${BASE_URL}/default/api/v1/delete_user?netid=${netID}`,
+        null
+      ).then((response) => {
+        console.log(response);
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleNetIDChange = (event) => {
-    setNetID(event.target.value);
-  };
-
   const handleSubmit = (event) => {
     if (netID !== "") {
-      console.log(netID);
-      // Do something with the netID
       handleDeleteUser();
       event.preventDefault();
       setNetID("");
@@ -46,7 +40,7 @@ const DeleteUserForm = () => {
             <Input
               placeholder="NetID"
               value={netID}
-              onChange={handleNetIDChange}
+              onChange={(event) => setNetID(event.target.value)}
             />
           </div>
           <Button type="submit">Submit</Button>

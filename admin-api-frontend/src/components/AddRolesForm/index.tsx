@@ -1,52 +1,33 @@
 import React, { useState } from "react";
 import { Input, Button } from "@nextui-org/react";
-import axios from "axios";
+import useFetchWithMsal from "../../hooks/useFetchWithMsal.jsx";
+import { loginRequest } from "../../authConfig.js";
 
 const AddRolesForm = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   const [netID, setNetID] = useState<string>("");
   const [roles, setRoles] = useState<string>("");
-  const [rolesSplit, setRolesSplit] = useState<string[]>([]);
 
+  const { execute } = useFetchWithMsal(loginRequest);
   const handleAddRolesThroughUpdate = async () => {
     try {
-      const response = await axios.put(
-        `${BASE_URL}/default/api/v1/update_user`,
-        null,
-        {
-          params: {
-            netid: netID,
-            newPerms: permissions,
-            newRoles: roles,
-          },
-        }
-      );
-      console.log(response.data);
+      execute(
+        "PUT",
+        `${BASE_URL}/default/api/v1/update_user?netid=${netID}&newRoles=${roles}&newPerms=`,
+        null
+      ).then((response) => {
+        console.log(response);
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleNetIDChange = (event) => {
-    setNetID(event.target.value);
-  };
-
-  const handleRolesChange = (event) => {
-    setRoles(event.target.value);
-    setRolesSplit(event.target.value.split(","));
-  };
-
   const handleSubmit = (event) => {
     if (netID !== "" && roles !== "") {
-      console.log(netID);
-      console.log(rolesSplit);
-      console.log(permissionsSplit);
-      // Do something with the netID, roles and permissions
-
       event.preventDefault();
       handleAddRolesThroughUpdate();
-      setRolesSplit([]);
       setNetID("");
       setRoles("");
     }
@@ -61,14 +42,14 @@ const AddRolesForm = () => {
             <Input
               placeholder="NetID"
               value={netID}
-              onChange={handleNetIDChange}
+              onChange={(event) => setNetID(event.target.value)}
             />
           </div>
           <div className="mb-2">
             <Input
               placeholder="Roles"
               value={roles}
-              onChange={handleRolesChange}
+              onChange={(event) => setRoles(event.target.value)}
             />
           </div>
           <Button type="submit">Submit</Button>
