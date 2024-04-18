@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 env:
-  REACT_APP_BASE_URL: "https://83hq7g76ng.execute-api.us-east-1.amazonaws.com"
+  REACT_APP_BASE_URL: "https://x7aneaby6i.execute-api.us-east-1.amazonaws.com"
 
 jobs:
   build:
