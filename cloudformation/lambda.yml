@@ -33,6 +33,11 @@ Parameters:
     AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
     Default: infra-admin-api-auth-lambda
 
+  AADSecretName:
+    Type: String
+    AllowedPattern: ^[a-zA-Z0-9]+[a-zA-Z0-9-]+[a-zA-Z0-9]+$
+    Default: infra-admin-api-aad-secret
+
 Conditions:
   UseCustomDomainNameCond: !Equals [!Ref UseCustomDomainName, true]
   IsProd: !Equals [!Ref Env, 'prod']
@@ -271,6 +276,15 @@ Resources:
                 Resource:
                   - !GetAtt MyDynamoDBTable.Arn
           PolicyName: lambda-dynamo
+        - PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - secretsmanager:GetSecretValue
+                Effect: Allow
+                Resource:
+                  - !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${AADSecretName}*
+          PolicyName: lambda-secret
 
   AdminAPIAuthLambdaLogGroup:
     Type: AWS::Logs::LogGroup
