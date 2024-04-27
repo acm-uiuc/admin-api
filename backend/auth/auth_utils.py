@@ -69,8 +69,8 @@ class AuthPolicy(object):
         if verb != "*" and not hasattr(HttpVerb, verb):
             raise NameError("Invalid HTTP verb " + verb + ". Allowed verbs in HttpVerb class")
         resourcePattern = re.compile(self.pathRegex)
-        if not resourcePattern.match(resource):
-            raise NameError("Invalid resource path: " + resource + ". Path should match " + self.pathRegex)
+        # if not resourcePattern.match(resource):
+        #     raise NameError("Invalid resource path: " + resource + ". Path should match " + self.pathRegex)
 
         if resource[:1] == "/":
             resource = resource[1:]
