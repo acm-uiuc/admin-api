@@ -110,7 +110,7 @@ def lambda_handler(event, context):
 
     # Finally, build the policy
     authResponse = policy.build()
-    print("Auth response: " + json.dumps(authResponse, indent=4))
+    print(f"Auth response: {authResponse}")
     
     return authResponse
 
