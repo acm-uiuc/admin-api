@@ -14,7 +14,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
  */
 const msalInstance = new PublicClientApplication(msalConfig);
 
-msalInstance.addEventCallback((event) => { if (event.eventType === EventType.SSO_SILENT_FAILURE && event.error?.errorCode === 'monitor_window_timeout') { instance.acquireTokenRedirect({ ...loginRequest, }); } });
+msalInstance.addEventCallback((event) => { if (event.eventType === EventType.SSO_SILENT_FAILURE && event.error?.errorCode === 'monitor_window_timeout') { msalInstance.acquireTokenRedirect({ ...loginRequest, }); } });
 
 // Default to using the first account if no account is active on page load
 if (!msalInstance.getActiveAccount() && msalInstance.getAllAccounts().length > 0) {
