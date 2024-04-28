@@ -20,7 +20,7 @@ const App = ({ instance }) => {
     console.error("Ah fuck!")
     return null;
   }
-  instance.addEventCallback((event) => { if (event.eventType === EventType.SSO_SILENT_FAILURE && event.error?.errorCode === 'monitor_window_timeout') { instance.acquireTokenRedirect({ ...loginRequest, }); } });
+  
   console.log(acct);
   return (
     <MsalProvider instance={instance}>
