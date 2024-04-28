@@ -7,7 +7,7 @@ import DeleteUserForm from "./components/DeleteUserForm/index.tsx";
 import { MsalProvider } from '@azure/msal-react';
 import { NextUIProvider } from "@nextui-org/react";
 import { MsalAuthenticationTemplate } from '@azure/msal-react';
-import { EventType, InteractionType } from '@azure/msal-browser';
+import { InteractionType } from '@azure/msal-browser';
 import { loginRequest } from "./authConfig";
 
 
