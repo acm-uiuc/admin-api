@@ -7,7 +7,7 @@ import DeleteUserForm from "./components/DeleteUserForm/index.tsx";
 import { MsalProvider } from '@azure/msal-react';
 import { NextUIProvider } from "@nextui-org/react";
 import { MsalAuthenticationTemplate } from '@azure/msal-react';
-import { InteractionType } from '@azure/msal-browser';
+import { EventType, InteractionType } from '@azure/msal-browser';
 import { loginRequest } from "./authConfig";
 
 
@@ -20,6 +20,7 @@ const App = ({ instance }) => {
     console.error("Ah fuck!")
     return null;
   }
+  instance.addEventCallback((event) => { if (event.eventType === EventType.SSO_SILENT_FAILURE && event.error?.errorCode === 'monitor_window_timeout') { instance.acquireTokenRedirect({ ...loginRequest, }); } });
   console.log(acct);
   return (
     <MsalProvider instance={instance}>
